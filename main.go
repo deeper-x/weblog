@@ -1,22 +1,23 @@
 package main
 
 import (
+	"log"
+
 	"github.com/deeper-x/weblog/db"
 )
 
 func main() {
 	// Create a new database engine
-	e := db.NewEngine()
-	defer e.Close()
-
-	// Set the context
-	cancel := e.SetContext()
-	defer cancel()
+	inst := db.NewInstance("localhost", "27017")
+	defer inst.Close()
 
 	// Connect to the database
-	e.Connect()
+	close, err := inst.Connect("test", "events")
+	if err != nil {
+		log.Panic(err)
+	}
+	defer close()
 
 	// Create a new entry
-	e.SetCollection("test", "events")
-	e.AddEntry("demo xyz")
+	inst.AddEntry("System XYZ - Failure detected")
 }

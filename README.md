@@ -1,18 +1,17 @@
 mongodb web app - web interface for logging events
 
 ```golang
-	// 1. Create a new database engine
-	e := db.NewEngine()
-	defer e.Close()
+	// Create a new database engine
+	inst := db.NewInstance("localhost", "27017")
+	defer inst.Close()
 
-	// 2. Set the context
-	cancel := e.SetContext()
-	defer cancel()
+	// Connect to the database, picking a collection
+	close, err := inst.Connect("test", "events")
+	if err != nil {
+		log.Panic(err)
+	}
+	defer close()
 
-	// 3. Connect to the database
-	e.Connect()
-
-	// 4. Create a new entry
-	e.SetCollection("test", "events")
-	e.AddEntry("demo xyz")
+	// Create a new entry
+	inst.AddEntry("System XYZ - Failure detected")
 ```
