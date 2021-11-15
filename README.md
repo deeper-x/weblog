@@ -1,4 +1,4 @@
-mongodb web app - web interface for logging events
+mongodb web app - web interface for logging events [WIP]
 
 ```golang
 	// Create a new database engine
