@@ -15,3 +15,9 @@ mongodb web app - web interface for logging events
 	// Create a new entry
 	inst.AddEntry("System XYZ - Failure detected")
 ```
+
+Result:
+```mongo
+{ "_id" : ObjectId("61926a844e8ea1f1871aedd9"), "ts" : ISODate("2021-11-15T14:11:16.078Z"), "text" : "System XYZ - Failure detected" }
+
+```
