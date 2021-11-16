@@ -79,5 +79,34 @@ Result:
 
 Test:
 ```golang
-go test -v ./...
+$ go test -v ./...
+?   	github.com/deeper-x/weblog	[no test files]
+=== RUN   TestNewInstance
+--- PASS: TestNewInstance (0.00s)
+=== RUN   TestCreateCtx
+--- PASS: TestCreateCtx (0.00s)
+=== RUN   TestCreateClient
+--- PASS: TestCreateClient (0.00s)
+=== RUN   TestCreateCollection
+--- PASS: TestCreateCollection (0.00s)
+=== RUN   TestConnect
+--- PASS: TestConnect (0.00s)
+=== RUN   TestClose
+--- PASS: TestClose (0.00s)
+=== RUN   TestAddEntry
+--- PASS: TestAddEntry (0.01s)
+=== RUN   TestSaveEntry
+--- PASS: TestSaveEntry (0.01s)
+=== RUN   TestGetEntries
+--- PASS: TestGetEntries (0.01s)
+PASS
+ok  	github.com/deeper-x/weblog/db	0.037s
+?   	github.com/deeper-x/weblog/messages	[no test files]
+?   	github.com/deeper-x/weblog/settings	[no test files]
+=== RUN   TestReadJSONFile
+--- PASS: TestReadJSONFile (0.00s)
+PASS
+ok  	github.com/deeper-x/weblog/wauth	0.006s
+?   	github.com/deeper-x/weblog/web	[no test files]
+
 ```
