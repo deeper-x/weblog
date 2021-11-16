@@ -39,6 +39,34 @@ If host is not allowed (e.g: ```SYSTEMFOO```, its signature ID is not in whiteli
 ```bash
 http://127.0.0.1:8080/save?signature=SYSTEMFOO&message=system%20failure%20detected%20on%20XYZ
 
+```
+Result:
+```bash
 Error: authentication denied
+```
 
+In order to retrieve object for registered systems, you have to call ```/load```  with parameter ```signature```:
+```bash
+http://127.0.0.1:8080/load?signature=SYSTEMXYZ
+```
+
+Result:
+```bash
+[
+    {
+        "Signature": "SYSTEMXYZ",
+        "TS": "2021-11-16T16:50:26.014Z",
+        "Message": "system failure detected on XYZ"
+    },
+    {
+        "Signature": "SYSTEMXYZ",
+        "TS": "2021-11-16T17:37:06.46Z",
+        "Message": "system failure detected on XYZ"
+    },
+    {
+        "Signature": "SYSTEMXYZ",
+        "TS": "2021-11-16T17:59:31.746Z",
+        "Message": "system failure detected on XYZ"
+    }
+]
 ```

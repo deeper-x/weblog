@@ -12,3 +12,6 @@ var SaveMsg = func(sender string) string {
 
 // Saved is the debug message when the entry is saved
 var Saved = "Entry saved succesfully ✔"
+
+// Loaded is the debug message when the entry is loaded
+var Loaded = "Entries loaded succesfully ✔"

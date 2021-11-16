@@ -92,3 +92,20 @@ func TestSaveEntry(t *testing.T) {
 		t.Error("Expected no error")
 	}
 }
+
+func TestGetEntries(t *testing.T) {
+	i := NewInstance("localhost", "27017")
+	i.createClient()
+	i.createCollection("test", "events")
+	i.createCtx()
+
+	err := i.client.Connect(i.ctx)
+	if err != nil {
+		t.Error("Expected no error")
+	}
+
+	_, err = i.GetEntries("senderX")
+	if err != nil {
+		t.Error("Expected no error")
+	}
+}

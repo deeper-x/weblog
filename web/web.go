@@ -1,6 +1,7 @@
 package web
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -39,7 +40,7 @@ func save(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if !checkParams(signature, message) {
+	if !checkSaveParams(signature, message) {
 		w.Write([]byte(messages.MissingParamsErr))
 		return
 	}
@@ -59,7 +60,47 @@ func save(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte(res))
 }
 
-func checkParams(sender, entry string) bool {
+func load(w http.ResponseWriter, req *http.Request) {
+	w.Header().Set("Content-Type", "text/json: charset=utf-8")
+
+	// reading GET parameters signature
+	signature := req.URL.Query().Get("signature")
+
+	isAuth, err := wauth.IsAllowed(signature)
+	if err != nil {
+		log.Println(err)
+		w.Write([]byte(messages.AuthError))
+		return
+	}
+
+	if !isAuth {
+		w.Write([]byte(messages.AuthDenied))
+		return
+	}
+
+	if !checkLoadParam(signature) {
+		w.Write([]byte(messages.MissingParamsErr))
+		return
+	}
+
+	data, err := db.GetEntries(signature)
+	if err != nil {
+		log.Println(messages.Loaded, err)
+		w.Write([]byte(messages.Loaded))
+		return
+	}
+
+	jData, err := json.Marshal(data)
+	if err != nil {
+		log.Println(messages.Loaded, err)
+		w.Write([]byte(messages.Loaded))
+		return
+	}
+	w.Write(jData)
+}
+
+// checkSaveParams checks if the GET parameters is valid
+func checkSaveParams(sender, entry string) bool {
 	if len(sender) == 0 || len(entry) == 0 {
 		return false
 	}
@@ -67,10 +108,7 @@ func checkParams(sender, entry string) bool {
 	return true
 }
 
-// Run the web server
-func Run() {
-	log.Println(messages.StartServer)
-
-	http.HandleFunc("/save", save)
-	http.ListenAndServe(":8080", nil)
+// checkLoadParam checks if the GET parameters is valid
+func checkLoadParam(sender string) bool {
+	return len(sender) != 0
 }
