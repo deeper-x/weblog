@@ -80,7 +80,14 @@ func TestAddEntry(t *testing.T) {
 		t.Error("Expected no error")
 	}
 
-	_, err = i.AddEntry("testAddEntry test running")
+	_, err = i.AddEntry("senderX", "testAddEntry test running")
+	if err != nil {
+		t.Error("Expected no error")
+	}
+}
+
+func TestSaveEntry(t *testing.T) {
+	_, err := SaveEntry("senderX", "TestSaveEntry test running")
 	if err != nil {
 		t.Error("Expected no error")
 	}

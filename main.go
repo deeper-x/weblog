@@ -1,23 +1,10 @@
 package main
 
 import (
-	"log"
-
-	"github.com/deeper-x/weblog/db"
+	"github.com/deeper-x/weblog/web"
 )
 
 func main() {
-	// Create a new database engine
-	inst := db.NewInstance("localhost", "27017")
-	defer inst.Close()
 
-	// Connect to the database
-	close, err := inst.Connect("test", "events")
-	if err != nil {
-		log.Panic(err)
-	}
-	defer close()
-
-	// Create a new entry
-	inst.AddEntry("System XYZ - Failure detected")
+	web.Run()
 }

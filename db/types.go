@@ -19,6 +19,7 @@ type Instance struct {
 
 // Entry is a MongoDB object
 type Entry struct {
-	TS   time.Time
-	Text string
+	Signature string
+	TS        time.Time
+	Text      string
 }

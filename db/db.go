@@ -4,17 +4,20 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
+	"github.com/deeper-x/weblog/settings"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // NewEntry creates a new MS
-func NewEntry(text string, ts time.Time) *Entry {
+func NewEntry(sender, text string, ts time.Time) *Entry {
 	return &Entry{
-		Text: text,
-		TS:   ts,
+		Signature: sender,
+		Text:      text,
+		TS:        ts,
 	}
 }
 
@@ -31,6 +34,7 @@ func (i *Instance) createCtx() {
 	i.ctx, i.Cancel = context.WithTimeout(context.Background(), 10*time.Second)
 }
 
+// createClient creates a new client
 func (i *Instance) createClient() {
 	uri := fmt.Sprintf("mongodb://%s:%s", i.host, i.port)
 	c, err := mongo.NewClient(options.Client().ApplyURI(uri))
@@ -41,6 +45,7 @@ func (i *Instance) createClient() {
 	i.client = c
 }
 
+// createCollection creates a new collection
 func (i *Instance) createCollection(dbname, collname string) {
 	i.collection = i.client.Database(dbname).Collection(collname)
 }
@@ -70,20 +75,44 @@ func (i *Instance) Close() {
 }
 
 // AddEntry adds an entry to the database
-func (i *Instance) AddEntry(msg string) (*mongo.InsertManyResult, error) {
+func (i *Instance) AddEntry(signature, txt string) (bool, error) {
 	data := []interface{}{
-		NewEntry(msg, time.Now()),
+		NewEntry(signature, txt, time.Now()),
 	}
 
-	res, err := i.collection.InsertMany(
+	_, err := i.collection.InsertMany(
 		i.ctx,
 		data,
 	)
 
 	if err != nil {
 		log.Println(err)
-		return nil, err
+		return false, err
 	}
 
-	return res, nil
+	return true, nil
+}
+
+// SaveEntry is the db wrapper to save an entry
+func SaveEntry(signature, entry string) (string, error) {
+	inst := NewInstance(settings.Host, settings.Port)
+	defer inst.Close()
+
+	// Connect to the database
+	close, err := inst.Connect(settings.Database, settings.Collection)
+	if err != nil {
+		log.Println(err)
+		return "Connection error", err
+	}
+	defer close()
+
+	// Create a new entry
+	ok, err := inst.AddEntry(signature, entry)
+	if err != nil {
+		log.Println(err)
+		return "DB save error", err
+	}
+
+	output := strconv.FormatBool(ok)
+	return output, nil
 }
