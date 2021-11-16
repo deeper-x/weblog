@@ -45,7 +45,7 @@ Result:
 Error: authentication denied
 ```
 
-In order to retrieve object for registered systems, you have to call ```/load```  with parameter ```signature```:
+In order to retrieve objects for registered systems, you have to call ```/load```  with parameter ```signature```:
 ```bash
 http://127.0.0.1:8080/load?signature=SYSTEMXYZ
 ```
