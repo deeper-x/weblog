@@ -22,6 +22,12 @@ Configure signature ID in whitelist.json like that:
 }
 ```
 
+
+Run:
+```go
+go run main.go
+```
+
 Call /save with parameter ```signature``` "SYSTEMXYZ" and ```message``` "System failure detected":
 
 ```bash
@@ -69,4 +75,9 @@ Result:
         "Message": "system failure detected on XYZ"
     }
 ]
+```
+
+Test:
+```golang
+go test -v ./...
 ```
