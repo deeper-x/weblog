@@ -21,5 +21,5 @@ type Instance struct {
 type Entry struct {
 	Signature string
 	TS        time.Time
-	Text      string
+	Message   string
 }

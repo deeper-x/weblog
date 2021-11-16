@@ -5,6 +5,6 @@ import (
 )
 
 func main() {
-
+	// Run the web server
 	web.Run()
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/deeper-x/weblog/db"
 	"github.com/deeper-x/weblog/messages"
+	"github.com/deeper-x/weblog/wauth"
 )
 
 func test(w http.ResponseWriter, req *http.Request) {
@@ -24,24 +25,37 @@ func save(w http.ResponseWriter, req *http.Request) {
 
 	// reading GET parameters
 	signature := req.URL.Query().Get("signature")
-	entry := req.URL.Query().Get("entry")
+	message := req.URL.Query().Get("message")
 
-	if !checkParams(signature, entry) {
+	isAuth, err := wauth.IsAllowed(signature)
+	if err != nil {
+		log.Println(err)
+		w.Write([]byte(messages.AuthError))
+		return
+	}
+
+	if !isAuth {
+		w.Write([]byte(messages.AuthDenied))
+		return
+	}
+
+	if !checkParams(signature, message) {
 		w.Write([]byte(messages.MissingParamsErr))
 		return
 	}
 
 	// Create a new database engine
-	smessage := messages.SavingEntry(signature)
+	smessage := messages.SaveMsg(signature)
 	log.Println(smessage)
 
-	res, err := db.SaveEntry(signature, entry)
+	res, err := db.SaveEntry(signature, message)
 	if err != nil {
 		log.Println(messages.SavingErr, err)
 		w.Write([]byte(messages.SavingErr))
 		return
 	}
 
+	log.Println(messages.Saved)
 	w.Write([]byte(res))
 }
 

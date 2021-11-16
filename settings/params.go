@@ -1,5 +1,7 @@
 package settings
 
+import "fmt"
+
 // Host is the hostname of the database
 const Host = "localhost"
 
@@ -10,4 +12,12 @@ const Port = "27017"
 const Database = "test"
 
 // Collection is the username of the database
-const Collection = "test"
+const Collection = "events"
+
+// RootDir is the root directory of the project
+const RootDir = "/home/deeper-x/go/src/github.com/deeper-x/weblog"
+
+// GetAuthFile is the path to the file containing the authentication information
+var GetAuthFile = func() string {
+	return fmt.Sprintf("%s/wauth/whitelist.json", RootDir)
+}

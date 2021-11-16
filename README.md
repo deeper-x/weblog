@@ -1,23 +1,44 @@
 mongodb web app - web interface for logging events [WIP]
 
-```golang
-	// Create a new database engine
-	inst := db.NewInstance("localhost", "27017")
-	defer inst.Close()
+In order to allow system with signature ID ```SYSTEMXYZ``` to log message ```System failure detected```
 
-	// Connect to the database, picking a collection
-	close, err := inst.Connect("test", "events")
-	if err != nil {
-		log.Panic(err)
-	}
-	defer close()
+Configure signature ID in whitelist.json like that:
 
-	// Create a new entry
-	inst.AddEntry("System XYZ - Failure detected")
+```json
+{
+    "systems": [{
+            "ID": "SYSTEMXYZ",
+            "Description": "Mail server 1"
+        },
+        {
+            "ID": "SYSTEMABC",
+            "Description": "File server 1"
+        },
+        {
+            "ID": "SYSTEMWZT",
+            "Description": "File server 2"
+        }
+    ]
+}
+```
+
+Call /save with parameter ```signature``` "SYSTEMXYZ" and ```message``` "System failure detected":
+
+```bash
+http://127.0.0.1:8080/save?signature=SYSTEMXYZ&message=System failure detected
 ```
 
 Result:
 ```mongo
-{ "_id" : ObjectId("61926a844e8ea1f1871aedd9"), "ts" : ISODate("2021-11-15T14:11:16.078Z"), "text" : "System XYZ - Failure detected" }
+{ "_id" : ObjectId("6193e1520dcdee3f35f5faff"), "signature" : "SYSTEMXYZ", "ts" : ISODate("2021-11-16T16:50:26.014Z"), "message" : "system failure detected on XYZ" }
+
+```
+
+If host is not allowed (e.g: ```SYSTEMFOO```, its signature ID is not in whitelist), then result is:
+
+```bash
+http://127.0.0.1:8080/save?signature=SYSTEMFOO&message=system%20failure%20detected%20on%20XYZ
+
+Error: authentication denied
 
 ```

@@ -1,0 +1,15 @@
+{
+    "systems": [{
+            "ID": "SYSTEMXYZ",
+            "Description": "Mail server 1"
+        },
+        {
+            "ID": "SYSTEMABC",
+            "Description": "File server 1"
+        },
+        {
+            "ID": "SYSTEMWZT",
+            "Description": "File server 2"
+        }
+    ]
+}

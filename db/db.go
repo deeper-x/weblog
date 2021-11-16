@@ -16,7 +16,7 @@ import (
 func NewEntry(sender, text string, ts time.Time) *Entry {
 	return &Entry{
 		Signature: sender,
-		Text:      text,
+		Message:   text,
 		TS:        ts,
 	}
 }
@@ -94,7 +94,7 @@ func (i *Instance) AddEntry(signature, txt string) (bool, error) {
 }
 
 // SaveEntry is the db wrapper to save an entry
-func SaveEntry(signature, entry string) (string, error) {
+func SaveEntry(signature, message string) (string, error) {
 	inst := NewInstance(settings.Host, settings.Port)
 	defer inst.Close()
 
@@ -107,7 +107,7 @@ func SaveEntry(signature, entry string) (string, error) {
 	defer close()
 
 	// Create a new entry
-	ok, err := inst.AddEntry(signature, entry)
+	ok, err := inst.AddEntry(signature, message)
 	if err != nil {
 		log.Println(err)
 		return "DB save error", err
