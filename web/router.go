@@ -14,5 +14,9 @@ func Run() {
 	http.HandleFunc("/save", save)
 	http.HandleFunc("/load", load)
 
-	http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServeTLS(":443", "tls/server.crt", "tls/server.key", nil)
+	if err != nil {
+		log.Panic(err)
+	}
+
 }

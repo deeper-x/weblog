@@ -43,8 +43,7 @@ Result:
 If host is not allowed (e.g: ```SYSTEMFOO```, its signature ID is not in whitelist), then result is:
 
 ```bash
-http://127.0.0.1:8080/save?signature=SYSTEMFOO&message=system%20failure%20detected%20on%20XYZ
-
+https://127.0.0.1/save?signature=SYSTEMXYZ&message=system failure on XYZ
 ```
 Result:
 ```bash
@@ -53,7 +52,7 @@ Error: authentication denied
 
 In order to retrieve objects for registered systems, you have to call ```/load```  with parameter ```signature```:
 ```bash
-http://127.0.0.1:8080/load?signature=SYSTEMXYZ
+https://127.0.0.1/save?signature=SYSTEMXYZ
 ```
 
 Result:
