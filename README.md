@@ -118,3 +118,29 @@ PASS
 coverage: 40.8% of statements
 ok  	github.com/deeper-x/weblog/web	0.029s	coverage: 40.8% of statements
 ```
+
+TLS deploy:
+```bash
+# key 2048 bit - RSA
+openssl genrsa -out tls/server.key 2048
+# self-signed cert (x509) pem encoded, no password
+openssl req -new -x509 -sha256 -key tls/server.key -out tls/server.crt -days 365
+```
+
+Environment setup
+```bash
+export GOPATH=${HOME}/go
+export GOBIN=${GOPATH}/bin
+export PATH=${PATH}:${GOBIN}
+export PATH=${PATH}:$( dirname $( which go ) )
+```
+
+Run:
+```
+sudo --preserve-env=GOPATH,GOBIN,PATH make run
+```
+
+Build:
+```
+sudo --preserve-env=GOPATH,GOBIN,PATH make build
+```
