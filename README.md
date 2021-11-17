@@ -144,3 +144,8 @@ Build:
 ```
 sudo --preserve-env=GOPATH,GOBIN,PATH make build
 ```
+
+Test:
+```
+sudo --preserve-env=GOPATH,GOBIN,PATH make test
+```
