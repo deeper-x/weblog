@@ -1,8 +1,8 @@
-mongodb web app - web interface for logging events [WIP]
+# mongodb web app - web interface for logging events [WIP]
 
 In order to allow system with signature ID ```SYSTEMXYZ``` to log message ```System failure detected```
 
-Configure signature ID in whitelist.json like that:
+### Configure signature ID in whitelist.json like that:
 
 ```json
 {
@@ -76,7 +76,31 @@ Result:
 ]
 ```
 
-Test:
+### Environment setup:
+```bash
+export GOPATH=${HOME}/go
+export GOBIN=${GOPATH}/bin
+export PATH=${PATH}:${GOBIN}
+export PATH=${PATH}:$( dirname $( which go ) )
+```
+
+### Run:
+```
+sudo --preserve-env=GOPATH,GOBIN,PATH make run
+```
+
+### Build:
+```
+sudo --preserve-env=GOPATH,GOBIN,PATH make build
+```
+
+### Test:
+```
+sudo --preserve-env=GOPATH,GOBIN,PATH make test
+```
+
+
+### Test coverage details:
 ```golang
 (main)$ go test -v -cover ./...
 ?   	github.com/deeper-x/weblog	[no test files]
@@ -119,33 +143,14 @@ coverage: 40.8% of statements
 ok  	github.com/deeper-x/weblog/web	0.029s	coverage: 40.8% of statements
 ```
 
+***
+
+## Additionale notes:
+
 TLS deploy:
 ```bash
 # key 2048 bit - RSA
 openssl genrsa -out tls/server.key 2048
 # self-signed cert (x509) pem encoded, no password
 openssl req -new -x509 -sha256 -key tls/server.key -out tls/server.crt -days 365
-```
-
-Environment setup
-```bash
-export GOPATH=${HOME}/go
-export GOBIN=${GOPATH}/bin
-export PATH=${PATH}:${GOBIN}
-export PATH=${PATH}:$( dirname $( which go ) )
-```
-
-Run:
-```
-sudo --preserve-env=GOPATH,GOBIN,PATH make run
-```
-
-Build:
-```
-sudo --preserve-env=GOPATH,GOBIN,PATH make build
-```
-
-Test:
-```
-sudo --preserve-env=GOPATH,GOBIN,PATH make test
 ```
