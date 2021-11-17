@@ -31,17 +31,23 @@ func save(w http.ResponseWriter, req *http.Request) {
 	isAuth, err := wauth.IsAllowed(signature)
 	if err != nil {
 		log.Println(err)
+
+		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(messages.AuthError))
 		return
 	}
 
 	if !isAuth {
+		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte(messages.AuthDenied))
+
 		return
 	}
 
 	if !checkSaveParams(signature, message) {
+		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte(messages.MissingParamsErr))
+
 		return
 	}
 
@@ -52,11 +58,16 @@ func save(w http.ResponseWriter, req *http.Request) {
 	res, err := db.SaveEntry(signature, message)
 	if err != nil {
 		log.Println(messages.SavingErr, err)
+
+		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(messages.SavingErr))
+
 		return
 	}
 
 	log.Println(messages.Saved)
+
+	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(res))
 }
 
@@ -69,33 +80,48 @@ func load(w http.ResponseWriter, req *http.Request) {
 	isAuth, err := wauth.IsAllowed(signature)
 	if err != nil {
 		log.Println(err)
+
+		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(messages.AuthError))
+
 		return
 	}
 
 	if !isAuth {
+		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte(messages.AuthDenied))
+
 		return
 	}
 
 	if !checkLoadParam(signature) {
+		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte(messages.MissingParamsErr))
+
 		return
 	}
 
 	data, err := db.GetEntries(signature)
 	if err != nil {
 		log.Println(messages.Loaded, err)
+
+		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(messages.Loaded))
+
 		return
 	}
 
 	jData, err := json.Marshal(data)
 	if err != nil {
 		log.Println(messages.Loaded, err)
+
+		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(messages.Loaded))
+
 		return
 	}
+
+	w.WriteHeader(http.StatusOK)
 	w.Write(jData)
 }
 
