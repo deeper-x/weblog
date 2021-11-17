@@ -79,7 +79,7 @@ Result:
 
 Test:
 ```golang
-$ go test -v ./...
+(main)$ go test -v -cover ./...
 ?   	github.com/deeper-x/weblog	[no test files]
 === RUN   TestNewInstance
 --- PASS: TestNewInstance (0.00s)
@@ -96,17 +96,26 @@ $ go test -v ./...
 === RUN   TestAddEntry
 --- PASS: TestAddEntry (0.01s)
 === RUN   TestSaveEntry
---- PASS: TestSaveEntry (0.01s)
+--- PASS: TestSaveEntry (0.00s)
 === RUN   TestGetEntries
---- PASS: TestGetEntries (0.01s)
+--- PASS: TestGetEntries (0.00s)
 PASS
-ok  	github.com/deeper-x/weblog/db	0.037s
+coverage: 59.4% of statements
+ok  	github.com/deeper-x/weblog/db	0.038s	coverage: 59.4% of statements
 ?   	github.com/deeper-x/weblog/messages	[no test files]
 ?   	github.com/deeper-x/weblog/settings	[no test files]
 === RUN   TestReadJSONFile
 --- PASS: TestReadJSONFile (0.00s)
 PASS
-ok  	github.com/deeper-x/weblog/wauth	0.006s
-?   	github.com/deeper-x/weblog/web	[no test files]
-
+coverage: 46.2% of statements
+ok  	github.com/deeper-x/weblog/wauth	0.004s	coverage: 46.2% of statements
+=== RUN   TestSave
+2021/11/17 12:30:56 Saving entry - Signature: [SYSTEMXYZ]
+2021/11/17 12:30:56 Entry saved succesfully ✔
+--- PASS: TestSave (0.01s)
+=== RUN   TestLoad
+--- PASS: TestLoad (0.01s)
+PASS
+coverage: 40.8% of statements
+ok  	github.com/deeper-x/weblog/web	0.029s	coverage: 40.8% of statements
 ```
