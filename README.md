@@ -31,7 +31,7 @@ go run main.go
 Call /save with parameter ```signature``` "SYSTEMXYZ" and ```message``` "System failure detected":
 
 ```bash
-http://127.0.0.1:8080/save?signature=SYSTEMXYZ&message=System failure detected
+https://127.0.0.1/save?signature=SYSTEMXYZ&message=System failure detected
 ```
 
 Result:
